@@ -1,0 +1,82 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "off",
+        "noVoid": "off",
+        "noForEach": "off",
+        "noExtraBooleanCast": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "error",
+        "noGlobalEval": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noUnknownAtRules": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "noLabelWithoutControl": "off",
+        "useKeyWithClickEvents": "off",
+
+        // Rules that are relevant to the legacy app
+        "useButtonType": "off",
+        "useAriaPropsSupportedByRole": "off",
+        "noStaticElementInteractions": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useTemplate": "off",
+        "useEnumInitializers": "off",
+
+        // Rules that are relevant to the legacy app
+        "noDescendingSpecificity": "off",
+        "useNodejsImportProtocol": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "off"
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": false,
+      "allowWrongLineComments": false
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "none"
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/build",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/.git",
+      "!**/generated",
+      "!**/wagmi.ts",
+      "!**/wagmi.d.ts",
+      "!**/bun.lock",
+      "!style.css",
+      "!**/yearn.fi-worktree-*",
+      "!**/apps/lib/style.css"
+    ]
+  }
+}
