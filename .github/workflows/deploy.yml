@@ -8,6 +8,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: yearn
+  AZURE_RESOURCE_GROUP: Websites
   NODE_VERSION: '20'
 
 jobs:
@@ -33,15 +34,17 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      - name: Copy server.js to dist
+      - name: Prepare dist for Azure
         working-directory: frontend
         run: |
           cp server.js dist/server.js
-          cd dist && npm init -y && npm install express --save
-
-      - name: Zip dist for deployment
-        working-directory: frontend/dist
-        run: zip -r ../../deploy.zip .
+          cat > dist/package.json << 'EOF'
+          {
+            "name": "yearn-frontend",
+            "version": "1.0.0",
+            "scripts": { "start": "node server.js" }
+          }
+          EOF
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -49,4 +52,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Web App
-        run: az webapp deploy --name yearn --resource-group Websites --src-path deploy.zip --type zip --async true
+        working-directory: frontend/dist
+        run: |
+          az webapp config appsettings set --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --settings SCM_DO_BUILD_DURING_DEPLOYMENT=false --output none
+          az webapp up --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --runtime "NODE:20-lts" --os-type Linux
